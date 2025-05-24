@@ -7,35 +7,33 @@ import {
   receipts,
 } from '@/db/schema'
 import { db } from '@/db'
+import { authMiddleware } from '@/lib/auth-middleware'
 
 export const createReceipt = createServerFn({ method: 'POST' })
   .validator((data: ExtractSchemaType) => data)
-  .handler(async ({ data }) => {
-    // TODO: Zastąpić tymczasowym user_id prawdziwym ID z sesji użytkownika
-    const tempUserId = 1
-
-    // Transformuj dane z scrapeBill na format bazy i waliduj schematem Drizzle
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const userId = context.user.id
+    if (!userId) {
+      throw new Error('User ID is required')
+    }
     const receiptData = receiptInsertSchema.parse({
       business_name: data.businessName || null,
       date: data.date || null,
       total: data.total?.toString() || null,
     })
 
-    // Wrap in transaction to ensure data consistency
     return await db.transaction(async (tx) => {
-      // Zapisz paragon do tabeli receipts
       const [receipt] = await tx
         .insert(receipts)
         .values({
           ...receiptData,
-          user_id: tempUserId,
+          user_id: userId,
         })
         .returning({ id: receipts.id })
 
-      // Zapisz pozycje paragonu do tabeli receipt_items
       if (data.items.length > 0) {
         const itemsToInsert = data.items.map((item) => {
-          // Transformuj każdą pozycję i waliduj schematem Drizzle
           return receiptItemInsertSchema.parse({
             receipt_id: receipt.id,
             name: item.name,
