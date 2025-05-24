@@ -1,6 +1,7 @@
 // Users and authentication
 export * from './users'
 export * from './users-relations'
+export * from './auth-schema'
 
 // Groups and membership
 export * from './groups'

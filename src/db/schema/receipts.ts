@@ -1,23 +1,23 @@
 import {
   date,
-  integer,
   numeric,
   pgTable,
   serial,
+  text,
   timestamp,
   varchar,
 } from 'drizzle-orm/pg-core'
 import { createInsertSchema } from 'drizzle-zod'
 import { relations } from 'drizzle-orm'
-import { users } from './users'
+import { user } from './users'
 import { receiptItems } from './receipt-items'
 import { receiptShares } from './receipt-shares'
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 
 export const receipts = pgTable('receipts', {
   id: serial('id').primaryKey(),
-  user_id: integer('user_id')
-    .references(() => users.id)
+  user_id: text('user_id')
+    .references(() => user.id)
     .notNull(),
   business_name: varchar('business_name', { length: 255 }),
   date: date('date'), // Data paragonu
@@ -31,9 +31,9 @@ export const receipts = pgTable('receipts', {
 
 // Relations
 export const receiptsRelations = relations(receipts, ({ one, many }) => ({
-  user: one(users, {
+  user: one(user, {
     fields: [receipts.user_id],
-    references: [users.id],
+    references: [user.id],
   }),
   items: many(receiptItems),
   shares: many(receiptShares),

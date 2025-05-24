@@ -1,18 +1,12 @@
-import {
-  integer,
-  pgTable,
-  serial,
-  timestamp,
-  varchar,
-} from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
-import { users } from './users'
+import { user } from './users'
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 
 export const productAliases = pgTable('product_aliases', {
   id: serial('id').primaryKey(),
-  user_id: integer('user_id')
-    .references(() => users.id)
+  user_id: text('user_id')
+    .references(() => user.id)
     .notNull(),
   original_name: varchar('original_name', { length: 255 }).notNull(), // nazwa z paragonu
   friendly_name: varchar('friendly_name', { length: 255 }).notNull(), // przyjazna nazwa ustawiona przez użytkownika
@@ -25,9 +19,9 @@ export const productAliases = pgTable('product_aliases', {
 
 // Relations
 export const productAliasesRelations = relations(productAliases, ({ one }) => ({
-  user: one(users, {
+  user: one(user, {
     fields: [productAliases.user_id],
-    references: [users.id],
+    references: [user.id],
   }),
 }))
 
