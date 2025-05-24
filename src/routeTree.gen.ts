@@ -11,10 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as DashboardRouteImport } from './routes/dashboard/route'
+import { Route as AuthRouteImport } from './routes/auth/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as AuthSignInImport } from './routes/auth/sign-in'
+import { Route as DashboardReceiptsIndexImport } from './routes/dashboard/receipts/index'
+import { Route as DashboardReceiptsCreateImport } from './routes/dashboard/receipts/create'
 
 // Create/Update Routes
+
+const DashboardRouteRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRouteRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -22,10 +39,28 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DashboardIndexRoute = DashboardIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+
 const AuthSignInRoute = AuthSignInImport.update({
-  id: '/auth/sign-in',
-  path: '/auth/sign-in',
-  getParentRoute: () => rootRoute,
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
+const DashboardReceiptsIndexRoute = DashboardReceiptsIndexImport.update({
+  id: '/receipts/',
+  path: '/receipts/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+
+const DashboardReceiptsCreateRoute = DashboardReceiptsCreateImport.update({
+  id: '/receipts/create',
+  path: '/receipts/create',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -39,51 +74,151 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/auth/sign-in': {
       id: '/auth/sign-in'
-      path: '/auth/sign-in'
+      path: '/sign-in'
       fullPath: '/auth/sign-in'
       preLoaderRoute: typeof AuthSignInImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof AuthRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexImport
+      parentRoute: typeof DashboardRouteImport
+    }
+    '/dashboard/receipts/create': {
+      id: '/dashboard/receipts/create'
+      path: '/receipts/create'
+      fullPath: '/dashboard/receipts/create'
+      preLoaderRoute: typeof DashboardReceiptsCreateImport
+      parentRoute: typeof DashboardRouteImport
+    }
+    '/dashboard/receipts/': {
+      id: '/dashboard/receipts/'
+      path: '/receipts'
+      fullPath: '/dashboard/receipts'
+      preLoaderRoute: typeof DashboardReceiptsIndexImport
+      parentRoute: typeof DashboardRouteImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthRouteRouteChildren {
+  AuthSignInRoute: typeof AuthSignInRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthSignInRoute: AuthSignInRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
+interface DashboardRouteRouteChildren {
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardReceiptsCreateRoute: typeof DashboardReceiptsCreateRoute
+  DashboardReceiptsIndexRoute: typeof DashboardReceiptsIndexRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardReceiptsCreateRoute: DashboardReceiptsCreateRoute,
+  DashboardReceiptsIndexRoute: DashboardReceiptsIndexRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/receipts/create': typeof DashboardReceiptsCreateRoute
+  '/dashboard/receipts': typeof DashboardReceiptsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/receipts/create': typeof DashboardReceiptsCreateRoute
+  '/dashboard/receipts': typeof DashboardReceiptsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/receipts/create': typeof DashboardReceiptsCreateRoute
+  '/dashboard/receipts/': typeof DashboardReceiptsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/sign-in'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/auth/sign-in'
+    | '/dashboard/'
+    | '/dashboard/receipts/create'
+    | '/dashboard/receipts'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/sign-in'
-  id: '__root__' | '/' | '/auth/sign-in'
+  to:
+    | '/'
+    | '/auth'
+    | '/auth/sign-in'
+    | '/dashboard'
+    | '/dashboard/receipts/create'
+    | '/dashboard/receipts'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/auth/sign-in'
+    | '/dashboard/'
+    | '/dashboard/receipts/create'
+    | '/dashboard/receipts/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthSignInRoute: typeof AuthSignInRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthSignInRoute: AuthSignInRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +232,42 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/auth/sign-in"
+        "/auth",
+        "/dashboard"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/auth": {
+      "filePath": "auth/route.tsx",
+      "children": [
+        "/auth/sign-in"
+      ]
+    },
+    "/dashboard": {
+      "filePath": "dashboard/route.tsx",
+      "children": [
+        "/dashboard/",
+        "/dashboard/receipts/create",
+        "/dashboard/receipts/"
+      ]
+    },
     "/auth/sign-in": {
-      "filePath": "auth/sign-in.tsx"
+      "filePath": "auth/sign-in.tsx",
+      "parent": "/auth"
+    },
+    "/dashboard/": {
+      "filePath": "dashboard/index.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/receipts/create": {
+      "filePath": "dashboard/receipts/create.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/receipts/": {
+      "filePath": "dashboard/receipts/index.tsx",
+      "parent": "/dashboard"
     }
   }
 }
