@@ -4,9 +4,10 @@ import type { ExtractSchemaType } from '@/server/scrapeBill'
 
 type ReceiptViewProps = {
   data: ExtractSchemaType
+  onSubmit: () => void
 }
 
-export const ReceiptView = ({ data }: ReceiptViewProps) => {
+export const ReceiptView = ({ data, onSubmit }: ReceiptViewProps) => {
   return (
     <div className="w-full min-h-full max-h-full grid grid-rows-[auto_1fr_auto] gap-5">
       <div>
@@ -30,7 +31,7 @@ export const ReceiptView = ({ data }: ReceiptViewProps) => {
           </div>
         ))}
       </div>
-      <Button>Zatwierdź</Button>
+      <Button onClick={onSubmit}>Zatwierdź</Button>
     </div>
   )
 }

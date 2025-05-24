@@ -1,12 +1,14 @@
 import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
+import { toast } from 'sonner'
 import { usePasteImage } from '@/hooks/usePasteImage'
 import { scrapeBill } from '@/server/scrapeBill'
 import { ReceiptView } from '@/components/receipt-view'
 import { Button } from '@/components/ui/button'
 import { If, IfValue } from '@/components/if'
 import { ReceiptLoadingView } from '@/components/receipt-loading-view'
+import { createReceipt } from '@/server/receipt'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -16,9 +18,21 @@ function App() {
   const { pastedImage, clearImage } = usePasteImage()
 
   const scrapeBillFn = useServerFn(scrapeBill)
+  const createReceiptFn = useServerFn(createReceipt)
 
   const mutation = useMutation({
     mutationFn: scrapeBillFn,
+  })
+
+  const createReceiptMutation = useMutation({
+    mutationFn: createReceiptFn,
+    onSuccess: () => {
+      toast.success('Poprawnie dodano paragon')
+    },
+    onError: (error) => {
+      console.error('Błąd podczas zapisywania paragonu:', error)
+      toast.error('Nie udało się dodać paragonu')
+    },
   })
 
   if (pastedImage)
@@ -32,7 +46,7 @@ function App() {
           />
 
           <div className="h-full min-w-2xl ">
-            <If condition={!mutation.data}>
+            <If condition={!mutation.data && !mutation.isPending}>
               <div className="flex flex-col justify-center h-full">
                 <h1 className="text-2xl font-bold my-5">
                   Czy to na pewno ten paragon?
@@ -53,7 +67,12 @@ function App() {
               <ReceiptLoadingView />
             </If>
             <IfValue value={mutation.data}>
-              {(data) => <ReceiptView data={data} />}
+              {(data) => (
+                <ReceiptView
+                  data={data}
+                  onSubmit={() => createReceiptMutation.mutate({ data })}
+                />
+              )}
             </IfValue>
           </div>
         </div>

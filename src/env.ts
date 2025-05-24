@@ -4,6 +4,7 @@ import { z } from 'zod'
 export const env = createEnv({
   server: {
     TOGETHER_API_KEY: z.string(),
+    DATABASE_URL: z.string(),
   },
 
   /**
@@ -20,6 +21,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     TOGETHER_API_KEY: process.env.TOGETHER_API_KEY,
+    DATABASE_URL: process.env.DATABASE_URL,
   },
 
   /**
