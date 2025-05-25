@@ -15,6 +15,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard/route'
 import { Route as AuthRouteImport } from './routes/auth/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
+import { Route as AuthIndexImport } from './routes/auth/index'
 import { Route as AuthSignInImport } from './routes/auth/sign-in'
 import { Route as DashboardReceiptsIndexImport } from './routes/dashboard/receipts/index'
 import { Route as DashboardReceiptsCreateImport } from './routes/dashboard/receipts/create'
@@ -43,6 +44,12 @@ const DashboardIndexRoute = DashboardIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardRouteRoute,
+} as any)
+
+const AuthIndexRoute = AuthIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 
 const AuthSignInRoute = AuthSignInImport.update({
@@ -95,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInImport
       parentRoute: typeof AuthRouteImport
     }
+    '/auth/': {
+      id: '/auth/'
+      path: '/'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof AuthIndexImport
+      parentRoute: typeof AuthRouteImport
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
@@ -123,10 +137,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteRouteChildren {
   AuthSignInRoute: typeof AuthSignInRoute
+  AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthSignInRoute: AuthSignInRoute,
+  AuthIndexRoute: AuthIndexRoute,
 }
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
@@ -154,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
+  '/auth/': typeof AuthIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/receipts/create': typeof DashboardReceiptsCreateRoute
   '/dashboard/receipts': typeof DashboardReceiptsIndexRoute
@@ -161,8 +178,8 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
+  '/auth': typeof AuthIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/receipts/create': typeof DashboardReceiptsCreateRoute
   '/dashboard/receipts': typeof DashboardReceiptsIndexRoute
@@ -174,6 +191,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
+  '/auth/': typeof AuthIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/receipts/create': typeof DashboardReceiptsCreateRoute
   '/dashboard/receipts/': typeof DashboardReceiptsIndexRoute
@@ -186,14 +204,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/auth/sign-in'
+    | '/auth/'
     | '/dashboard/'
     | '/dashboard/receipts/create'
     | '/dashboard/receipts'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
     | '/auth/sign-in'
+    | '/auth'
     | '/dashboard'
     | '/dashboard/receipts/create'
     | '/dashboard/receipts'
@@ -203,6 +222,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/auth/sign-in'
+    | '/auth/'
     | '/dashboard/'
     | '/dashboard/receipts/create'
     | '/dashboard/receipts/'
@@ -242,7 +262,8 @@ export const routeTree = rootRoute
     "/auth": {
       "filePath": "auth/route.tsx",
       "children": [
-        "/auth/sign-in"
+        "/auth/sign-in",
+        "/auth/"
       ]
     },
     "/dashboard": {
@@ -255,6 +276,10 @@ export const routeTree = rootRoute
     },
     "/auth/sign-in": {
       "filePath": "auth/sign-in.tsx",
+      "parent": "/auth"
+    },
+    "/auth/": {
+      "filePath": "auth/index.tsx",
       "parent": "/auth"
     },
     "/dashboard/": {

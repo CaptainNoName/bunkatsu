@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { LayoutDashboard, ReceiptText } from 'lucide-react'
+import { NavUser } from './nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -12,6 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { useSession } from '@/lib/auth-client'
 
 const navigationItems = [
   {
@@ -27,6 +29,10 @@ const navigationItems = [
 ]
 
 export function AppSidebar() {
+  const { data: session } = useSession()
+
+  const user = session?.user
+
   return (
     <Sidebar variant="inset">
       <SidebarHeader />
@@ -49,7 +55,15 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <NavUser
+          user={{
+            name: user?.name ?? '',
+            email: user?.email ?? '',
+            avatar: user?.image ?? '',
+          }}
+        />
+      </SidebarFooter>
     </Sidebar>
   )
 }

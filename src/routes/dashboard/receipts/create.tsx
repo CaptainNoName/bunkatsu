@@ -4,10 +4,10 @@ import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
 import { usePasteImage } from '@/hooks/usePasteImage'
 import { scrapeBill } from '@/server/scrapeBill'
-import { ReceiptView } from '@/components/receipt-view'
+import { ReceiptView } from '@/components/receipt/receipt-view'
 import { Button } from '@/components/ui/button'
 import { If, IfValue } from '@/components/if'
-import { ReceiptLoadingView } from '@/components/receipt-loading-view'
+import { ReceiptLoadingView } from '@/components/receipt/receipt-loading-view'
 import { createReceipt } from '@/server/receipt'
 
 export const Route = createFileRoute('/dashboard/receipts/create')({

@@ -1,6 +1,6 @@
-import { Button } from './ui/button'
-import { Separator } from './ui/separator'
-import { Skeleton } from './ui/skeleton'
+import { Button } from '../ui/button'
+import { Separator } from '../ui/separator'
+import { Skeleton } from '../ui/skeleton'
 
 export const ReceiptLoadingView = () => {
   return (
