@@ -67,7 +67,6 @@ export const getReceipts = createServerFn({ method: 'GET' })
         items: true,
       },
     })
-    console.log(queriedReceipts)
     return queriedReceipts
   })
 

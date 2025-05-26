@@ -67,7 +67,7 @@ function RouteComponent() {
           <ScrollArea className="h-full min-h-0">
             <div className="p-4 flex flex-col gap-2 divide-y divide-accent-foreground-muted">
               {selectedReceipt?.items.map((item) => (
-                <ReceiptItem item={item} />
+                <ReceiptItem key={item.id} item={item} />
               ))}
             </div>
           </ScrollArea>
