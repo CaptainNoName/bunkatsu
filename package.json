@@ -12,7 +12,8 @@
     "format": "prettier",
     "check": "prettier --write . && eslint --fix",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "scan": "next dev & bunx react-scan@latest localhost:3000"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",

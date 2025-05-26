@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { ReceiptText, ShoppingBasket } from 'lucide-react'
 import type { ReceiptWithItems } from '@/db/schema'
 import type { DateRange } from 'react-day-picker'
@@ -12,22 +12,28 @@ import { Button } from '@/components/ui/button'
 import { DateRangePicker } from '@/components/date-range'
 import { If } from '@/components/if'
 
+const getDefaultDateRange = (): DateRange => ({
+  from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+  to: new Date(),
+})
+
 export const Route = createFileRoute('/dashboard/receipts/')({
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(getReceiptsQueryOptions())
+    await context.queryClient.ensureQueryData(
+      getReceiptsQueryOptions(getDefaultDateRange()),
+    )
   },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { data: receipts } = useSuspenseQuery(getReceiptsQueryOptions())
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(
+    getDefaultDateRange(),
+  )
+
+  const { data: receipts = [] } = useQuery(getReceiptsQueryOptions(dateRange))
   const [selectedReceipt, setSelectedReceipt] =
     useState<ReceiptWithItems | null>(null)
-
-  const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    to: new Date(),
-  })
 
   return (
     <>
