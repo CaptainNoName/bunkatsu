@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
-import { ReceiptText, ShoppingBasket } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { ReceiptText } from 'lucide-react'
 import type { ReceiptWithItems } from '@/db/schema'
 import type { DateRange } from 'react-day-picker'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -17,7 +17,7 @@ const getDefaultDateRange = (): DateRange => ({
   to: new Date(),
 })
 
-export const Route = createFileRoute('/dashboard/receipts/')({
+export const Route = createFileRoute('/dashboard/expenses/')({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(
       getReceiptsQueryOptions(getDefaultDateRange()),
@@ -38,26 +38,29 @@ function RouteComponent() {
   return (
     <>
       <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 justify-between">
-        <p className="text-2xl font-bold">Paragony</p>
+        <p className="text-2xl font-bold">Wydatki</p>
         <div className="flex items-center gap-2">
           <DateRangePicker date={dateRange} setDate={setDateRange} />
           <Button asChild>
-            <Link to="/dashboard/receipts/create">Dodaj</Link>
+            <Link to="/dashboard/expenses/create">Dodaj</Link>
           </Button>
         </div>
       </header>
       <div className="h-full max-h-[calc(100dvh-16px)] grid grid-cols-5 divide-x divide-accent-foreground-muted">
         <If condition={!!receipts.length}>
-          <ScrollArea className="h-full min-h-0 p-4">
-            {receipts.map((receipt: ReceiptWithItems) => (
-              <ReceiptCard
-                key={receipt.id}
-                receipt={receipt}
-                selectedReceipt={selectedReceipt}
-                setSelectedReceipt={setSelectedReceipt}
-              />
-            ))}
-          </ScrollArea>
+          <div className="p-4">
+            <p className="text-lg font-bold mb-4">Paragony</p>
+            <ScrollArea className="max-h-full min-h-0">
+              {receipts.map((receipt: ReceiptWithItems) => (
+                <ReceiptCard
+                  key={receipt.id}
+                  receipt={receipt}
+                  selectedReceipt={selectedReceipt}
+                  setSelectedReceipt={setSelectedReceipt}
+                />
+              ))}
+            </ScrollArea>
+          </div>
         </If>
         <If condition={!receipts.length}>
           <div className="h-full w-full flex justify-center items-center">
@@ -70,22 +73,15 @@ function RouteComponent() {
           </div>
         </If>
         <If condition={!!selectedReceipt}>
-          <ScrollArea className="h-full min-h-0">
-            <div className="p-4 flex flex-col gap-2 divide-y divide-accent-foreground-muted">
-              {selectedReceipt?.items.map((item) => (
-                <ReceiptItem key={item.id} item={item} />
-              ))}
-            </div>
-          </ScrollArea>
-        </If>
-        <If condition={!selectedReceipt}>
-          <div className="h-full w-full flex justify-center items-center">
-            <div className="flex flex-col items-center gap-2">
-              <ShoppingBasket className="size-20 text-muted-foreground" />
-              <p className="text-center text-muted-foreground font-medium">
-                Wybierz paragon aby wyświetlić produkty
-              </p>
-            </div>
+          <div className="p-4">
+            <p className="text-lg font-bold mb-4">Towary</p>
+            <ScrollArea className="max-h-full min-h-0">
+              <div className="flex flex-col gap-2 divide-y divide-accent-foreground-muted">
+                {selectedReceipt?.items.map((item) => (
+                  <ReceiptItem key={item.id} item={item} />
+                ))}
+              </div>
+            </ScrollArea>
           </div>
         </If>
         <div className="min-h-0 p-4"></div>

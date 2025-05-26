@@ -10,7 +10,7 @@ import { If, IfValue } from '@/components/if'
 import { ReceiptLoadingView } from '@/components/receipt/receipt-loading-view'
 import { createReceipt } from '@/server/receipt'
 
-export const Route = createFileRoute('/dashboard/receipts/create')({
+export const Route = createFileRoute('/dashboard/expenses/create')({
   component: RouteComponent,
 })
 

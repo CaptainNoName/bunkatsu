@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { LayoutDashboard, ReceiptText } from 'lucide-react'
+import { BanknoteArrowDown, LayoutDashboard } from 'lucide-react'
 import { NavUser } from './nav-user'
 import {
   Sidebar,
@@ -22,9 +22,9 @@ const navigationItems = [
     icon: LayoutDashboard,
   },
   {
-    label: 'Paragony',
-    href: '/dashboard/receipts',
-    icon: ReceiptText,
+    label: 'Wydatki',
+    href: '/dashboard/expenses',
+    icon: BanknoteArrowDown,
   },
 ]
 

@@ -12,14 +12,16 @@ export const ReceiptCard = ({
   selectedReceipt,
   setSelectedReceipt,
 }: ReceiptCardProps) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    const value = selectedReceipt?.id === receipt.id ? null : receipt
+    setSelectedReceipt(value)
+  }
   return (
     <Card
       className={`cursor-pointer transition-all hover:shadow-md ${selectedReceipt?.id === receipt.id ? 'border-primary' : ''}`}
       role="button"
-      onClick={(e) => {
-        e.preventDefault()
-        setSelectedReceipt(receipt)
-      }}
+      onClick={handleClick}
     >
       <CardContent>
         <div className="flex justify-between items-center">

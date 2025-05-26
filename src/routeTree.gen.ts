@@ -17,8 +17,8 @@ import { Route as IndexImport } from './routes/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as AuthIndexImport } from './routes/auth/index'
 import { Route as AuthSignInImport } from './routes/auth/sign-in'
-import { Route as DashboardReceiptsIndexImport } from './routes/dashboard/receipts/index'
-import { Route as DashboardReceiptsCreateImport } from './routes/dashboard/receipts/create'
+import { Route as DashboardExpensesIndexImport } from './routes/dashboard/expenses/index'
+import { Route as DashboardExpensesCreateImport } from './routes/dashboard/expenses/create'
 
 // Create/Update Routes
 
@@ -58,15 +58,15 @@ const AuthSignInRoute = AuthSignInImport.update({
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
-const DashboardReceiptsIndexRoute = DashboardReceiptsIndexImport.update({
-  id: '/receipts/',
-  path: '/receipts/',
+const DashboardExpensesIndexRoute = DashboardExpensesIndexImport.update({
+  id: '/expenses/',
+  path: '/expenses/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 
-const DashboardReceiptsCreateRoute = DashboardReceiptsCreateImport.update({
-  id: '/receipts/create',
-  path: '/receipts/create',
+const DashboardExpensesCreateRoute = DashboardExpensesCreateImport.update({
+  id: '/expenses/create',
+  path: '/expenses/create',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 
@@ -116,18 +116,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexImport
       parentRoute: typeof DashboardRouteImport
     }
-    '/dashboard/receipts/create': {
-      id: '/dashboard/receipts/create'
-      path: '/receipts/create'
-      fullPath: '/dashboard/receipts/create'
-      preLoaderRoute: typeof DashboardReceiptsCreateImport
+    '/dashboard/expenses/create': {
+      id: '/dashboard/expenses/create'
+      path: '/expenses/create'
+      fullPath: '/dashboard/expenses/create'
+      preLoaderRoute: typeof DashboardExpensesCreateImport
       parentRoute: typeof DashboardRouteImport
     }
-    '/dashboard/receipts/': {
-      id: '/dashboard/receipts/'
-      path: '/receipts'
-      fullPath: '/dashboard/receipts'
-      preLoaderRoute: typeof DashboardReceiptsIndexImport
+    '/dashboard/expenses/': {
+      id: '/dashboard/expenses/'
+      path: '/expenses'
+      fullPath: '/dashboard/expenses'
+      preLoaderRoute: typeof DashboardExpensesIndexImport
       parentRoute: typeof DashboardRouteImport
     }
   }
@@ -151,14 +151,14 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardReceiptsCreateRoute: typeof DashboardReceiptsCreateRoute
-  DashboardReceiptsIndexRoute: typeof DashboardReceiptsIndexRoute
+  DashboardExpensesCreateRoute: typeof DashboardExpensesCreateRoute
+  DashboardExpensesIndexRoute: typeof DashboardExpensesIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
-  DashboardReceiptsCreateRoute: DashboardReceiptsCreateRoute,
-  DashboardReceiptsIndexRoute: DashboardReceiptsIndexRoute,
+  DashboardExpensesCreateRoute: DashboardExpensesCreateRoute,
+  DashboardExpensesIndexRoute: DashboardExpensesIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
@@ -172,8 +172,8 @@ export interface FileRoutesByFullPath {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/': typeof AuthIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/receipts/create': typeof DashboardReceiptsCreateRoute
-  '/dashboard/receipts': typeof DashboardReceiptsIndexRoute
+  '/dashboard/expenses/create': typeof DashboardExpensesCreateRoute
+  '/dashboard/expenses': typeof DashboardExpensesIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -181,8 +181,8 @@ export interface FileRoutesByTo {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth': typeof AuthIndexRoute
   '/dashboard': typeof DashboardIndexRoute
-  '/dashboard/receipts/create': typeof DashboardReceiptsCreateRoute
-  '/dashboard/receipts': typeof DashboardReceiptsIndexRoute
+  '/dashboard/expenses/create': typeof DashboardExpensesCreateRoute
+  '/dashboard/expenses': typeof DashboardExpensesIndexRoute
 }
 
 export interface FileRoutesById {
@@ -193,8 +193,8 @@ export interface FileRoutesById {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/': typeof AuthIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/receipts/create': typeof DashboardReceiptsCreateRoute
-  '/dashboard/receipts/': typeof DashboardReceiptsIndexRoute
+  '/dashboard/expenses/create': typeof DashboardExpensesCreateRoute
+  '/dashboard/expenses/': typeof DashboardExpensesIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -206,16 +206,16 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/'
     | '/dashboard/'
-    | '/dashboard/receipts/create'
-    | '/dashboard/receipts'
+    | '/dashboard/expenses/create'
+    | '/dashboard/expenses'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth/sign-in'
     | '/auth'
     | '/dashboard'
-    | '/dashboard/receipts/create'
-    | '/dashboard/receipts'
+    | '/dashboard/expenses/create'
+    | '/dashboard/expenses'
   id:
     | '__root__'
     | '/'
@@ -224,8 +224,8 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/'
     | '/dashboard/'
-    | '/dashboard/receipts/create'
-    | '/dashboard/receipts/'
+    | '/dashboard/expenses/create'
+    | '/dashboard/expenses/'
   fileRoutesById: FileRoutesById
 }
 
@@ -270,8 +270,8 @@ export const routeTree = rootRoute
       "filePath": "dashboard/route.tsx",
       "children": [
         "/dashboard/",
-        "/dashboard/receipts/create",
-        "/dashboard/receipts/"
+        "/dashboard/expenses/create",
+        "/dashboard/expenses/"
       ]
     },
     "/auth/sign-in": {
@@ -286,12 +286,12 @@ export const routeTree = rootRoute
       "filePath": "dashboard/index.tsx",
       "parent": "/dashboard"
     },
-    "/dashboard/receipts/create": {
-      "filePath": "dashboard/receipts/create.tsx",
+    "/dashboard/expenses/create": {
+      "filePath": "dashboard/expenses/create.tsx",
       "parent": "/dashboard"
     },
-    "/dashboard/receipts/": {
-      "filePath": "dashboard/receipts/index.tsx",
+    "/dashboard/expenses/": {
+      "filePath": "dashboard/expenses/index.tsx",
       "parent": "/dashboard"
     }
   }
