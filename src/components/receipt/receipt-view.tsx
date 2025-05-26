@@ -31,7 +31,12 @@ export const ReceiptView = ({ data, onSubmit }: ReceiptViewProps) => {
           </div>
         ))}
       </div>
-      <Button onClick={onSubmit}>Zatwierdź</Button>
+      <div className="flex flex-col">
+        <p className="text-lg font-bold mb-2">Suma: {data.total} zł</p>
+        <Button size={'lg'} onClick={onSubmit}>
+          Zatwierdź
+        </Button>
+      </div>
     </div>
   )
 }

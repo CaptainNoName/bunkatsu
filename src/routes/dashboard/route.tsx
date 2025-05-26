@@ -1,4 +1,5 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
+import { Toaster } from 'sonner'
 import { getUserID } from '@/server/user'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/sidebar/app-sidebar'
@@ -24,6 +25,7 @@ function RouteComponent() {
       <AppSidebar />
       <SidebarInset>
         <Outlet />
+        <Toaster richColors />
       </SidebarInset>
     </SidebarProvider>
   )

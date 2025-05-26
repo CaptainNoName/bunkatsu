@@ -6,7 +6,6 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
-import { Toaster } from 'sonner'
 import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
 
 import appCss from '../styles.css?url'
@@ -58,7 +57,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="dark">
         {children}
-        <Toaster richColors />
         <Scripts />
       </body>
     </html>

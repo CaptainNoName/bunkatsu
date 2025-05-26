@@ -24,3 +24,23 @@ export const IfValue = <T,>({
   }
   return null
 }
+
+// Wariant z dodatkowym warunkiem
+export const IfValueWith = <T,>({
+  value,
+  condition,
+  children,
+}: {
+  value: T | null | undefined
+  condition: boolean | ((data: T) => boolean)
+  children: (data: T) => React.ReactNode
+}) => {
+  if (value != null) {
+    const shouldRender =
+      typeof condition === 'function' ? condition(value) : condition
+    if (shouldRender) {
+      return <>{children(value)}</>
+    }
+  }
+  return null
+}
