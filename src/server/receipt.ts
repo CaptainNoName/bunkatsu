@@ -1,4 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
+import { eq } from 'drizzle-orm'
+import { queryOptions } from '@tanstack/react-query'
 import type { ExtractSchemaType } from './scrapeBill'
 import {
   receiptInsertSchema,
@@ -49,4 +51,28 @@ export const createReceipt = createServerFn({ method: 'POST' })
 
       return { success: true, receiptId: receipt.id }
     })
+  })
+
+export const getReceipts = createServerFn({ method: 'GET' })
+  .middleware([authMiddleware])
+  .handler(async ({ context }) => {
+    const userId = context.user.id
+    if (!userId) {
+      throw new Error('User ID is required')
+    }
+
+    const queriedReceipts = await db.query.receipts.findMany({
+      where: eq(receipts.user_id, userId),
+      with: {
+        items: true,
+      },
+    })
+    console.log(queriedReceipts)
+    return queriedReceipts
+  })
+
+export const getReceiptsQueryOptions = () =>
+  queryOptions({
+    queryKey: ['receipts'],
+    queryFn: () => getReceipts(),
   })
