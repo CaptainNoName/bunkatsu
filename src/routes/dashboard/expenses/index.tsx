@@ -1,16 +1,11 @@
 import { useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
-import { ReceiptText } from 'lucide-react'
-import type { ReceiptWithItems } from '@/db/schema'
 import type { DateRange } from 'react-day-picker'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { getReceiptsQueryOptions } from '@/server/receipt'
-import { ReceiptCard } from '@/components/expenses/receipt/receipt-card'
-import { ReceiptItem } from '@/components/expenses/receipt/receipt-item'
 import { Button } from '@/components/ui/button'
 import { DateRangePicker } from '@/components/date-range'
-import { If } from '@/components/if'
+import { ReceiptWidget } from '@/components/expenses/receipt/receipt-widget'
+import { TotalWidget } from '@/components/expenses/total-widget'
 
 const getDefaultDateRange = (): DateRange => ({
   from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
@@ -31,13 +26,9 @@ function RouteComponent() {
     getDefaultDateRange(),
   )
 
-  const { data: receipts = [] } = useQuery(getReceiptsQueryOptions(dateRange))
-  const [selectedReceipt, setSelectedReceipt] =
-    useState<ReceiptWithItems | null>(null)
-
   return (
     <>
-      <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 justify-between">
+      <header className="flex h-16 items-center gap-2 border-b px-4 justify-between">
         <p className="text-2xl font-bold">Wydatki</p>
         <div className="flex items-center gap-2">
           <DateRangePicker date={dateRange} setDate={setDateRange} />
@@ -46,45 +37,12 @@ function RouteComponent() {
           </Button>
         </div>
       </header>
-      <div className="h-full max-h-[calc(100dvh-16px)] grid grid-cols-5 divide-x divide-accent-foreground-muted">
-        <If condition={!!receipts.length}>
-          <div className="p-4">
-            <p className="text-lg font-bold mb-4">Paragony</p>
-            <ScrollArea className="max-h-full min-h-0">
-              {receipts.map((receipt: ReceiptWithItems) => (
-                <ReceiptCard
-                  key={receipt.id}
-                  receipt={receipt}
-                  selectedReceipt={selectedReceipt}
-                  setSelectedReceipt={setSelectedReceipt}
-                />
-              ))}
-            </ScrollArea>
-          </div>
-        </If>
-        <If condition={!receipts.length}>
-          <div className="h-full w-full flex justify-center items-center">
-            <div className="flex flex-col items-center gap-2">
-              <ReceiptText className="size-18 text-muted-foreground" />
-              <p className="text-center text-muted-foreground font-medium">
-                Brak paragonów w wybranym okresie
-              </p>
-            </div>
-          </div>
-        </If>
-        <If condition={!!selectedReceipt}>
-          <div className="p-4">
-            <p className="text-lg font-bold mb-4">Towary</p>
-            <ScrollArea className="max-h-full min-h-0">
-              <div className="flex flex-col gap-2 divide-y divide-accent-foreground-muted">
-                {selectedReceipt?.items.map((item) => (
-                  <ReceiptItem key={item.id} item={item} />
-                ))}
-              </div>
-            </ScrollArea>
-          </div>
-        </If>
-        <div className="min-h-0 p-4"></div>
+      <div className="h-full flex divide-x divide-accent-foreground-muted">
+        <ReceiptWidget dateRange={dateRange} />
+        <div className="min-h-0 p-4 flex-1 grid grid-cols-4 gap-4 auto-rows-min">
+          <p className="text-lg font-bold col-span-4">Overview</p>
+          <TotalWidget dateRange={dateRange} />
+        </div>
       </div>
     </>
   )

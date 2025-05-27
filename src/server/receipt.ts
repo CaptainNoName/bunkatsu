@@ -1,7 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
-import { and, eq, gte, lte } from 'drizzle-orm'
+import { and, eq, gte, lte, sum } from 'drizzle-orm'
 import { queryOptions } from '@tanstack/react-query'
 import type { ExtractSchemaType } from './scrapeBill'
+import type { DateRange } from 'react-day-picker'
 import {
   receiptInsertSchema,
   receiptItemInsertSchema,
@@ -82,16 +83,53 @@ export const getReceipts = createServerFn({ method: 'GET' })
     return queriedReceipts
   })
 
-export const getReceiptsQueryOptions = (dateRange?: {
-  from?: Date
-  to?: Date
-}) => {
+export const getReceiptsQueryOptions = (dateRange?: DateRange) => {
   const from = dateRange?.from?.toISOString().split('T')[0]
   const to = dateRange?.to?.toISOString().split('T')[0]
 
   return queryOptions({
     queryKey: ['receipts', from, to],
     queryFn: () => getReceipts({ data: { from, to } }),
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+export const getReceiptsTotal = createServerFn({ method: 'GET' })
+  .validator((data: { from?: string; to?: string }) => data)
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    const userId = context.user.id
+    if (!userId) {
+      throw new Error('User ID is required')
+    }
+
+    const conditions = [eq(receipts.user_id, userId)]
+
+    if (data.from) {
+      conditions.push(gte(receipts.date, data.from))
+    }
+
+    if (data.to) {
+      conditions.push(lte(receipts.date, data.to))
+    }
+
+    const result = await db
+      .select({
+        total: sum(receipts.total),
+      })
+      .from(receipts)
+      .where(and(...conditions))
+
+    return Number(result[0]?.total || 0)
+  })
+
+export const getReceiptsTotalQueryOptions = (dateRange?: DateRange) => {
+  const from = dateRange?.from?.toISOString().split('T')[0]
+  const to = dateRange?.to?.toISOString().split('T')[0]
+
+  return queryOptions({
+    queryKey: ['receipts-total', from, to],
+    queryFn: () => getReceiptsTotal({ data: { from, to } }),
     staleTime: 5 * 60 * 1000,
   })
 }
