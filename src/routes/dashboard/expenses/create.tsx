@@ -1,8 +1,8 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ReceiptScan } from '@/components/receipt/receipt-scan'
-import { ReceiptManual } from '@/components/receipt/receipt-manual'
+import { ReceiptScan } from '@/components/expenses/receipt/create/receipt-scan'
+import { ReceiptManual } from '@/components/expenses/receipt/create/receipt-manual'
 
 export const Route = createFileRoute('/dashboard/expenses/create')({
   component: RouteComponent,

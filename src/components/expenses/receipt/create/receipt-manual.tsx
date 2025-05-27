@@ -5,7 +5,7 @@ import { useServerFn } from '@tanstack/react-start'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { Card } from '../ui/card'
+import { Card } from '../../../ui/card'
 import {
   Form,
   FormControl,
@@ -13,11 +13,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form'
-import { Input } from '../ui/input'
-import { InputNumber } from '../ui/input-number'
-import { Button } from '../ui/button'
-import { DatePicker } from '../date-picker'
+} from '../../../ui/form'
+import { Input } from '../../../ui/input'
+import { InputNumber } from '../../../ui/input-number'
+import { Button } from '../../../ui/button'
+import { DatePicker } from '../../../date-picker'
 import { createReceipt } from '@/server/receipt'
 
 export const ReceiptManual = () => {
