@@ -2,6 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ReceiptScan } from '@/components/receipt/receipt-scan'
+import { ReceiptManual } from '@/components/receipt/receipt-manual'
 
 export const Route = createFileRoute('/dashboard/expenses/create')({
   component: RouteComponent,
@@ -24,7 +25,7 @@ function RouteComponent() {
             <ReceiptScan />
           </TabsContent>
           <TabsContent value="manual">
-            <p>Wklej paragon albo kliknij aby dodać plik</p>
+            <ReceiptManual />
           </TabsContent>
         </Tabs>
       </div>
