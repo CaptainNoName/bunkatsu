@@ -27,7 +27,7 @@ export const ReceiptCard = ({
 
   return (
     <Card
-      className={`cursor-pointer transition-all hover:shadow-md ${selectedReceipt?.id === receipt.id ? 'border-primary' : ''} mb-2`}
+      className={`cursor-pointer transition-all hover:shadow-md ${selectedReceipt?.id === receipt.id ? 'border-primary' : ''} mb-2 py-3`}
       role="button"
       onClick={handleClick}
     >
