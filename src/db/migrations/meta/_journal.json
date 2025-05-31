@@ -8,6 +8,13 @@
       "when": 1748119983737,
       "tag": "0000_quick_galactus",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1748699610963,
+      "tag": "0001_tan_menace",
+      "breakpoints": true
     }
   ]
 }

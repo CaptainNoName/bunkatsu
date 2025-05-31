@@ -32,6 +32,7 @@ export const createReceipt = createServerFn({ method: 'POST' })
         .values({
           ...receiptData,
           user_id: userId,
+          paid_by: userId,
         })
         .returning({ id: receipts.id })
 
@@ -77,6 +78,13 @@ export const getReceipts = createServerFn({ method: 'GET' })
       where: and(...conditions),
       with: {
         items: true,
+        payer: {
+          columns: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
       },
       orderBy: (receipt, { desc }) => [desc(receipt.date)],
     })

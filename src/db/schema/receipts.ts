@@ -19,8 +19,11 @@ export const receipts = pgTable('receipts', {
   user_id: text('user_id')
     .references(() => user.id)
     .notNull(),
+  paid_by: text('paid_by')
+    .references(() => user.id)
+    .notNull(),
   business_name: varchar('business_name', { length: 255 }),
-  date: date('date'), // Data paragonu
+  date: date('date'),
   total: numeric('total', { precision: 10, scale: 2 }),
   created_at: timestamp('created_at').defaultNow().notNull(),
   updated_at: timestamp('updated_at')
@@ -35,6 +38,10 @@ export const receiptsRelations = relations(receipts, ({ one, many }) => ({
     fields: [receipts.user_id],
     references: [user.id],
   }),
+  payer: one(user, {
+    fields: [receipts.paid_by],
+    references: [user.id],
+  }),
   items: many(receiptItems),
   shares: many(receiptShares),
 }))
@@ -46,6 +53,7 @@ export type NewReceipt = InferInsertModel<typeof receipts>
 export const receiptInsertSchema = createInsertSchema(receipts).omit({
   id: true,
   user_id: true,
+  paid_by: true,
   created_at: true,
   updated_at: true,
 })

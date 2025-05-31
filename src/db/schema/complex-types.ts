@@ -7,6 +7,11 @@ import type { ReceiptItem } from './receipt-items'
 // Complex types for commonly used data structures
 export type ReceiptWithItems = Receipt & {
   items: Array<ReceiptItem>
+  payer: {
+    id: string
+    name: string
+    image: string | null
+  }
 }
 
 export type GroupWithMembers = Group & {
