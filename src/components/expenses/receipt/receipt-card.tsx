@@ -1,7 +1,7 @@
 import { Card, CardContent } from '../../ui/card'
-import type { ReceiptWithItems } from '@/db/schema'
+import type { ReceiptWithItems } from '@/types/receipts'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { If, IfValue } from '@/components/if'
+import { IfValue } from '@/components/if'
 import {
   Tooltip,
   TooltipContent,

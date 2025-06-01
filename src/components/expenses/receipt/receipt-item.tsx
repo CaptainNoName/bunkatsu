@@ -1,4 +1,4 @@
-import type { ReceiptItem as ReceiptItemType } from '@/db/schema'
+import type { ReceiptItem as ReceiptItemType } from '@/db/schema/receipt-items'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 type ReceiptItemProps = {

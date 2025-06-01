@@ -6,10 +6,11 @@ import { If } from '../../if'
 import { ReceiptItem } from './receipt-item'
 import { ReceiptCard } from './receipt-card'
 import { ReceiptDetails } from './receipt-details'
-import type { ReceiptWithItems } from '@/db/schema'
 import type { DateRange } from 'react-day-picker'
-import { getReceiptsQueryOptions } from '@/server/receipt'
+import type { ReceiptItem as ReceiptItemType } from '@/db/schema/receipt-items'
+import type { ReceiptWithItems } from '@/types/receipts'
 import { Separator } from '@/components/ui/separator'
+import { getReceiptsQueryOptions } from '@/server/receipt'
 
 export const ReceiptWidget = ({
   dateRange,
@@ -57,7 +58,7 @@ export const ReceiptWidget = ({
           <p className="text-lg font-bold mb-4">Towary</p>
           <ScrollArea className="max-h-full min-h-0">
             <div className="flex flex-col gap-2 divide-y divide-accent-foreground-muted">
-              {selectedReceipt?.items.map((item) => (
+              {selectedReceipt?.items.map((item: ReceiptItemType) => (
                 <ReceiptItem key={item.id} item={item} />
               ))}
             </div>

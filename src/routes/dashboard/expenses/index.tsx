@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { DateRangePicker } from '@/components/date-range'
 import { ReceiptWidget } from '@/components/expenses/receipt/receipt-widget'
 import { TotalWidget } from '@/components/expenses/total-widget'
+import { GroupsWidget } from '@/components/expenses/groups/groups-widget'
 
 const getDefaultDateRange = (): DateRange => ({
   from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
@@ -42,6 +43,7 @@ function RouteComponent() {
         <div className="min-h-0 p-4 flex-1 grid grid-cols-4 gap-4 auto-rows-min">
           <p className="text-lg font-bold col-span-4">Overview</p>
           <TotalWidget dateRange={dateRange} />
+          <GroupsWidget />
         </div>
       </div>
     </>

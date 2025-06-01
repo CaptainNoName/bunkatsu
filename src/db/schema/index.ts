@@ -14,6 +14,3 @@ export * from './receipt-shares'
 
 // Product management
 export * from './product-aliases'
-
-// Complex types
-export * from './complex-types'

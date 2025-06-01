@@ -17,7 +17,9 @@ export const env = createEnv({
    */
   clientPrefix: 'VITE_',
 
-  client: {},
+  client: {
+    VITE_FRONTEND_URL: z.string().url(),
+  },
 
   /**
    * What object holds the environment variables at runtime. This is usually
@@ -30,6 +32,7 @@ export const env = createEnv({
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    VITE_FRONTEND_URL: import.meta.env.VITE_FRONTEND_URL,
   },
 
   /**

@@ -15,6 +15,13 @@
       "when": 1748699610963,
       "tag": "0001_tan_menace",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1748717846397,
+      "tag": "0002_wild_magus",
+      "breakpoints": true
     }
   ]
 }
