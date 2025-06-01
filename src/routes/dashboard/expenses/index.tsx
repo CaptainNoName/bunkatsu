@@ -40,7 +40,10 @@ function RouteComponent() {
       </header>
       <div className="h-full flex divide-x divide-accent-foreground-muted">
         <ReceiptWidget dateRange={dateRange} />
-        <div className="min-h-0 p-4 flex-1 grid grid-cols-4 gap-4 auto-rows-min">
+        <div
+          className="min-h-0 p-4 flex-1 grid grid-cols-4 gap-4 [grid-template-rows:masonry] auto-rows-min"
+          style={{ gridTemplateRows: 'masonry' }}
+        >
           <p className="text-lg font-bold col-span-4">Overview</p>
           <TotalWidget dateRange={dateRange} />
           <GroupsWidget />
